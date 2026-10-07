@@ -1,1 +1,53 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Tools - Wisemans</title><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-black text-white p-6"><div class="max-w-xl mx-auto"><h1 class="text-2xl font-bold">AI Tools - Face 1</h1><p class="text-gray-400 mb-6">Auto Swahili Caption</p><div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800"><textarea id="txt" placeholder="Andika: Mungu ni mwema..." class="w-full p-4 bg-black border border-zinc-700 rounded-xl h-28"></textarea><button onclick="gen()" class="w-full mt-4 bg-yellow-400 text-black font-bold py-4 rounded-xl">Tengeneza Caption</button><div id="out" class="hidden mt-6 p-4 bg-black rounded-xl border border-zinc-700"></div></div><a href="/" class="block text-center mt-8 text-gray-500">Rudi Home</a></div><script>function gen(){let t=document.getElementById('txt').value;if(!t)return alert('Andika kwanza!');let c=`🔥 ${t} 🔥\n\n#WisemansStudio #GospelMombasa`;document.getElementById('out').innerHTML=`<p style="white-space:pre-wrap">${c}</p><button onclick="navigator.clipboard.writeText(\`${c}\`)" class="mt-3 text-sm bg-zinc-800 px-3 py-2 rounded">Copy</button>`;document.getElementById('out').classList.remove('hidden');}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Tools V2 - Wisemans</title>
+<script src="cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white p-6">
+<div class="max-w-xl mx-auto">
+<h1 class="text-xl font-bold">AI Tools V2</h1>
+<p class="text-gray-400 mb-3">English + Kiswahili - Zote mbili</p>
+<div class="bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
+<div class="flex gap-2 mb-3">
+<button id="bSw" onclick="mode='sw';upd()" class="flex-1 py-2 rounded-lg bg-yellow-400 text-black font-bold">Kiswahili</button>
+<button id="bEn" onclick="mode='en';upd()" class="flex-1 py-2 rounded-lg bg-zinc-800">English → Kiswahili</button>
+</div>
+<textarea id="txt" class="w-full p-3 bg-black border border-zinc-700 rounded-xl h-24" placeholder="Andika hapa..."></textarea>
+<button onclick="go()" class="w-full mt-3 bg-yellow-400 text-black font-bold py-3 rounded-xl">Tengeneza</button>
+<div id="st" class="text-center text-xs text-yellow-300 mt-2"></div>
+<div id="out" class="hidden mt-3 p-3 bg-black border border-zinc-700 rounded-xl text-sm whitespace-pre-wrap"></div>
+</div>
+<a href="/" class="block text-center mt-6 text-gray-500">← Rudi Home</a>
+</div>
+<script>
+let mode='sw';
+function upd(){
+document.getElementById('bSw').className=mode=='sw'?'flex-1 py-2 rounded-lg bg-yellow-400 text-black font-bold':'flex-1 py-2 rounded-lg bg-zinc-800';
+document.getElementById('bEn').className=mode=='en'?'flex-1 py-2 rounded-lg bg-yellow-400 text-black font-bold':'flex-1 py-2 rounded-lg bg-zinc-800';
+document.getElementById('txt').placeholder=mode=='sw'?'Andika: Mungu ni mwema...':'Andika: God is good...';
+}
+async function go(){
+let t=document.getElementById('txt').value.trim();
+if(!t){alert('Andika!');return;}
+let s=document.getElementById('st'),o=document.getElementById('out');
+if(mode=='en'){
+s.innerText='Inatafsiri...';
+try{
+let r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(t)+'&langpair=en|sw');
+let j=await r.json();
+t=j.responseData.translatedText||t;
+s.innerText='Imetafsiriwa: '+t;
+}catch(e){s.innerText='';}
+}
+setTimeout(()=>s.innerText='',2500);
+let c='🔥 '+t+' 🔥\n\n#WisemansStudio #GospelMombasa';
+o.innerText=c;
+o.classList.remove('hidden');
+}
+upd();
+</script>
+</body>
+</html>
