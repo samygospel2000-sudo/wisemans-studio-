@@ -3,31 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Tools V2 - Wisemans</title>
-<script src="cdn.tailwindcss.com"></script>
+<title>AI Tools V2</title>
+<style>
+body{background:#000;color:#fff;font-family:sans-serif;padding:20px;margin:0}
+.box{max-width:500px;margin:auto}
+.card{background:#1a1a1a;padding:20px;border-radius:16px;border:1px solid #333}
+.btn{padding:10px;border-radius:10px;border:1px solid #444;background:#272727;color:#fff}
+.btn.active{background:#facc15;color:#000;font-weight:bold}
+textarea{width:100%;padding:12px;background:#000;border:1px solid #555;border-radius:12px;color:#fff}
+.go{width:100%;margin-top:12px;padding:14px;background:#facc15;color:#000;font-weight:bold;border:none;border-radius:12px}
+.out{margin-top:12px;padding:12px;background:#000;border:1px solid #555;border-radius:12px;white-space:pre-wrap}
+</style>
 </head>
-<body class="bg-black text-white p-6">
-<div class="max-w-xl mx-auto">
-<h1 class="text-xl font-bold">AI Tools V2</h1>
-<p class="text-gray-400 mb-3">English + Kiswahili - Zote mbili</p>
-<div class="bg-zinc-900 p-4 rounded-2xl border border-zinc-800">
-<div class="flex gap-2 mb-3">
-<button id="bSw" onclick="mode='sw';upd()" class="flex-1 py-2 rounded-lg bg-yellow-400 text-black font-bold">Kiswahili</button>
-<button id="bEn" onclick="mode='en';upd()" class="flex-1 py-2 rounded-lg bg-zinc-800">English → Kiswahili</button>
+<body>
+<div class="box">
+<h1>AI Tools V2</h1>
+<p style="color:#aaa">English + Kiswahili</p>
+<div class="card">
+<div style="display:flex;gap:8px;margin-bottom:12px">
+<button id="bSw" onclick="mode='sw';upd()" class="btn active" style="flex:1">Kiswahili</button>
+<button id="bEn" onclick="mode='en';upd()" class="btn" style="flex:1">English → Kiswahili</button>
 </div>
-<textarea id="txt" class="w-full p-3 bg-black border border-zinc-700 rounded-xl h-24" placeholder="Andika hapa..."></textarea>
-<button onclick="go()" class="w-full mt-3 bg-yellow-400 text-black font-bold py-3 rounded-xl">Tengeneza</button>
-<div id="st" class="text-center text-xs text-yellow-300 mt-2"></div>
-<div id="out" class="hidden mt-3 p-3 bg-black border border-zinc-700 rounded-xl text-sm whitespace-pre-wrap"></div>
+<textarea id="txt" rows="3" placeholder="Andika hapa..."></textarea>
+<button class="go" onclick="go()">Tengeneza</button>
+<div id="st" style="text-align:center;color:#facc15;font-size:12px;margin-top:8px"></div>
+<div id="out" class="out" style="display:none"></div>
 </div>
-<a href="/" class="block text-center mt-6 text-gray-500">← Rudi Home</a>
+<a href="/" style="display:block;text-align:center;margin-top:20px;color:#888">← Rudi Home</a>
 </div>
 <script>
 let mode='sw';
 function upd(){
-document.getElementById('bSw').className=mode=='sw'?'flex-1 py-2 rounded-lg bg-yellow-400 text-black font-bold':'flex-1 py-2 rounded-lg bg-zinc-800';
-document.getElementById('bEn').className=mode=='en'?'flex-1 py-2 rounded-lg bg-yellow-400 text-black font-bold':'flex-1 py-2 rounded-lg bg-zinc-800';
-document.getElementById('txt').placeholder=mode=='sw'?'Andika: Mungu ni mwema...':'Andika: God is good...';
+document.getElementById('bSw').className=mode=='sw'?'btn active':'btn';
+document.getElementById('bEn').className=mode=='en'?'btn active':'btn';
 }
 async function go(){
 let t=document.getElementById('txt').value.trim();
@@ -36,16 +44,15 @@ let s=document.getElementById('st'),o=document.getElementById('out');
 if(mode=='en'){
 s.innerText='Inatafsiri...';
 try{
-let r=await fetch('https://api.mymemory.translated.net/get?q='+encodeURIComponent(t)+'&langpair=en|sw');
+let r=await fetch('api.mymemory.translated.net'+encodeURIComponent(t)+'&langpair=en|sw');
 let j=await r.json();
 t=j.responseData.translatedText||t;
 s.innerText='Imetafsiriwa: '+t;
 }catch(e){s.innerText='';}
 }
-setTimeout(()=>s.innerText='',2500);
-let c='🔥 '+t+' 🔥\n\n#WisemansStudio #GospelMombasa';
-o.innerText=c;
-o.classList.remove('hidden');
+setTimeout(()=>s.innerText='',3000);
+o.innerText='🔥 '+t+' 🔥\n\n#WisemansStudio';
+o.style.display='block';
 }
 upd();
 </script>
